@@ -11,27 +11,21 @@ class BencodeParser:
 
     @staticmethod
     def byte_string(file_content : str, index : int) -> list:
-        print("Byte string")
         length = ""
         while (char := file_content[index]).isnumeric():
             length += char
-            print("length:", length)
             index += 1
         index += 1 # skips :
-        print("INDEX:", index)
         length = int(length)
 
         string = ""
         for i in range(length):
             string += file_content[index]
-            #print(string, index)
             index += 1
-        #print("index bytestring", file_content[index])
         return [string, index]
 
     @staticmethod
     def integer(file_content : str, index : int) -> list:
-        print("Integer")
         index += 1
         integer = ""
         while (char := file_content[index]) != 'e':
@@ -42,7 +36,6 @@ class BencodeParser:
 
     @staticmethod
     def decider(file_content : str, index : int):
-        print("Decider", file_content[index], index)
         if file_content[index] == 'd':
             index += 1
 
@@ -81,7 +74,6 @@ class BencodeParser:
             returned_value = BencodeParser.byte_string(file_content, index) # -> ["bencode", i]
             index = returned_value[1]
             return returned_value
-        return []
 
     @staticmethod
     def decode(filename : str) -> dict:
@@ -99,7 +91,6 @@ class BencodeParser:
             index = 1
             while file_content[index] != 'e':
                 returned_value = BencodeParser.decider(file_content, index)
-                print(returned_value)
                 if BencodeParser.is_key:
                     BencodeParser.key = returned_value[0]
                     BencodeParser.is_key = False
@@ -107,8 +98,9 @@ class BencodeParser:
                     BencodeParser.is_key = True
                     BencodeParser.main_dictionary[BencodeParser.key] = returned_value[0]
 
-                index = int(returned_value[1]) + 1
+                index = int(returned_value[1])
 
         return BencodeParser.main_dictionary
 
 BencodeParser.decode(input())
+print(BencodeParser.main_dictionary)
