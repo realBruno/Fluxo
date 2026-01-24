@@ -3,7 +3,6 @@ class BencodeParser:
     is_key: bool = True # checks if entry is key or value in dictionary
     key = None
     MAX_PRINTABLE: int = 127  # maximum possible decimal value for a printable char in the ASCII table
-    MAX_LENGTH = 0
 
     @staticmethod
     def byte_string(file_content : str, index : int) -> list:
@@ -81,7 +80,6 @@ class BencodeParser:
                 file_content = ""
 
                 for line in file.read():
-                    BencodeParser.MAX_LENGTH += 1
                     file_content += chr(line)
 
                 if file_content[0] != 'd':
