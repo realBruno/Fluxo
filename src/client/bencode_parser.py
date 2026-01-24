@@ -8,8 +8,7 @@ class BencodeParser:
     @staticmethod
     def byte_string(file_content : str, index : int) -> list:
         length = ""
-        while ((index < BencodeParser.MAX_LENGTH) and
-               (char := file_content[index]).isnumeric()):
+        while (char := file_content[index]).isnumeric():
             length += char
             index += 1
         index += 1 # skips :
@@ -17,9 +16,15 @@ class BencodeParser:
         length = int(length)
 
         string = ""
+        to_hex = False
         for i in range(length):
             string += file_content[index]
+            if ord(file_content[index]) > 127:
+                to_hex = True
             index += 1
+
+        if to_hex:
+            string = ' '.join(f'{b:02x}' for b in string.encode("latin-1"))
 
         return [string, index]
 
