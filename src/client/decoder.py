@@ -41,13 +41,8 @@ def parse(contents: str, index: int):
             return iterate(contents, index, 'i')
 
         elif contents[index].isdigit():
-            ishex = False
             length, index = iterate(contents, index)
             string = contents[index: index + length]
-            for char in string:
-                if ord(char) > 127: ishex = True
-            if ishex:
-                string = ''.join(f'{b:02x}' for b in string.encode("latin-1"))
             return string, index + length
 
     except Exception as e:
@@ -57,38 +52,3 @@ def decode(path: str):
     contents = read(path).decode("latin-1")
     decoded = parse(contents, 0)[0]
     return decoded
-
-def value(v: list | dict | str | int):
-    content = ''
-    match v:
-        case list():
-            content += 'l'
-            for item in v:
-                content += value(item)
-            content += 'e'
-        case dict():
-            content += 'd'
-            for key, val in v.items():
-                content += value(key)
-                content += value(val)
-            content += 'e'
-        case int():
-            content += 'i' + str(v) + 'e'
-        case str():
-            #print(content)
-            content += str(len(v)) + ':' + str(v)
-
-    return content
-
-def info_hash(parsed: dict):
-    # Assumes passed dictionary is the value for the key 'info'
-
-    if type(parsed) != dict:
-        raise ValueError("Data is not a dictionary")
-
-    bencoded = 'd'
-    for k, v in parsed.items():
-        bencoded += str(len(k)) + ':'
-        bencoded += value(v)
-
-    print(bencoded)
