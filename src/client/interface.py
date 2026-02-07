@@ -1,9 +1,20 @@
 import sys
 
-from client import request
+from client.request.mode import single
+from client.bencode import decoder
+from client.request import peer
+from client.request import support
 
-def show_progress():
-    ...
+def make_request(path: str):
+    decoded, info_hash, is_single = support.get_file_info(path)
+    announce = decoded[b"announce"]
+    if is_single:
+        payload = single.torrent(decoded, info_hash)
+        response = single.submit(announce, payload)
+        response = decoder.parse(response, 0)[0]
+        peer.handshake(response)
+    else:
+        raise TypeError("Multi-file mode is under development")
 
 def get_path():
     if len(sys.argv) == 2:
@@ -14,9 +25,3 @@ def get_path():
         raise TypeError(f"Takes exactly 1 argument. {len(sys.argv) - 1} given.")
 
     make_request(path)
-
-def make_request(path: str):
-    decoded, hashed = request.get_file_info(path)
-    request.torrent(decoded, hashed)
-
-# get_path()
