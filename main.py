@@ -4,6 +4,6 @@
     Date: 24/jan/2026
 """
 
-import client
+from client import interface
 
-client.interface()
+interface.get_path()
