@@ -1,7 +1,6 @@
 import requests
-from requests import Response
 
-from src.client.request import support
+from client import support
 
 def submit(announce: str, payload: dict) -> bytes:
     for i in range(9): # make 9 attempts to connect before giving up
