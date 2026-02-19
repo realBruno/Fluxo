@@ -5,23 +5,18 @@
 """
 import sys
 
-from client import modes, peer
-
+from torrent import metainfo
+from torrent.modes.single_file import single_file
+from peer.connections import contact_peer
 
 def make_request(path: str):
-    print("Parsing metadata...")
-    decoded, info_hash, is_single = modes.get_file_info(path)
-    announce = decoded[b"announce"]
+    print("Parsing torrent file metadata")
+    decoded, info_hash, is_single = metainfo.get_file_info(path)
     if is_single:
-        print("Building payload...")
-        payload = modes.single_torrent(decoded, info_hash)
-        print("Submitting request...")
-        response = modes.submit(announce, payload)
-        print("Request was successful!")
-        print("Starting contact with peers...")
-        info_hash = payload["info_hash"]
-        peer_id = payload["peer_id"]
-        peer.contact_peer(response, info_hash, peer_id)
+        print("Building tracker payload and making request")
+        t_payload, t_response = single_file(decoded, info_hash)
+        print("Establishing connection with peers")
+        contact_peer(decoded, t_response, t_payload)
     else:
         raise TypeError("Multi-file mode is under development")
 

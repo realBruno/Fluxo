@@ -1,12 +1,10 @@
 from dataclasses import dataclass
 
-import asyncio
-
+import numpy as np
 
 @dataclass
 class Peer:
-    writer: asyncio.StreamWriter
-    reader: asyncio.StreamReader
+    bitfield: np.ndarray
 
     peer_choking: bool = True       # peer is choking this client
     peer_interested: bool = False   # peer is interested in this client
