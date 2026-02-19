@@ -117,8 +117,7 @@ class PeerProtocol:
             return None
         return bits[:total_pieces]
 
-    @staticmethod
-    async def handle_piece(peer: Peer, download: Download, payload):
+    async def handle_piece(self, peer: Peer, download: Download, payload):
         index = struct.unpack("!I", payload[0:4])[0]
         begin = struct.unpack("!I", payload[4:8])[0]
         block = payload[8:]
@@ -149,6 +148,9 @@ class PeerProtocol:
             return
 
         print(f"{Fore.GREEN}SUCCESS:{Fore.RESET} piece number {index} has been downloaded")
+
+        if not peer.peer_choking:
+            await self.send_request(peer, download)
 
         async with download.lock:
             download.downloaded[index] = True

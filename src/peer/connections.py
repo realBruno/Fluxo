@@ -60,7 +60,9 @@ async def handle_peer(endpoint, handshake, download, semaphore):
                             peer.peer_choking = True
                         case Message.unchoke:
                             peer.peer_choking = False
-                            await peer_protocol.send_request(peer, download)
+                            requested = await peer_protocol.send_request(peer, download)
+                            if not requested:
+                                return
                         # case Message.interested:
                         #     await peer_protocol.handle_interested()
                         # case Message.not_interested:
