@@ -10,9 +10,9 @@ from typing import Any
 import numpy as np
 from colorama import Fore
 
-from peer.messages import Message
-from peer.peer import Peer
-from torrent.download import Download
+from src.peer.messages import Message
+from src.peer.peer import Peer
+from src.torrent.download import Download
 
 
 @dataclass

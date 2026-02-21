@@ -5,9 +5,10 @@
 """
 import sys
 
-from torrent import metainfo
-from torrent.modes.single_file import single_file
-from peer.connections import contact_peer
+from src.torrent import metainfo
+from src.torrent.modes.single_file import single_file
+from src.peer.connections import contact_peer
+
 
 def make_request(path: str):
     print("Parsing torrent file metadata")

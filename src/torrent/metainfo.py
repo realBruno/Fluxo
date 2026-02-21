@@ -2,7 +2,7 @@ import hashlib
 import random
 import binascii
 
-from torrent import bencode
+from src.torrent import bencode
 
 
 def get_file_info(path: str) -> tuple[dict, str, bool]:

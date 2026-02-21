@@ -6,11 +6,11 @@ import struct
 import numpy as np
 from colorama import Fore
 
-from  peer.peer import Peer
-from peer.protocol import PeerProtocol
-from torrent.download import Download, build_download
-from tracker.endpoints import sock_addr
-from peer.messages import Message
+from src.peer.peer import Peer
+from src.peer.protocol import PeerProtocol
+from src.torrent.download import Download, build_download
+from src.tracker.endpoints import sock_addr
+from src.   peer.messages import Message
 
 
 def build_handshake(info_hash: bytes, peer_id: str) -> bytes:

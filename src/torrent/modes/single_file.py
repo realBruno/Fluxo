@@ -1,6 +1,6 @@
 import requests
 
-from torrent import metainfo, bencode
+from src.torrent import metainfo, bencode
 
 
 def submit(announce: bytes, payload: dict) -> dict:

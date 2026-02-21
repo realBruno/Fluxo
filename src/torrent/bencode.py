@@ -6,13 +6,17 @@ def decode(path: str | bytes):
 
 
 def iterate(contents: bytes, index, caller='b'):
+    negative = 1
     if caller == 'i':
         index += 1
+        if contents[index] == 45:
+            negative = -1
+            index += 1
     number = bytearray()
     while 48 <= contents[index] <= 57:
         number.append(contents[index])
         index += 1
-    number = int(number)
+    number = int(number) * negative
     return number, index + 1
 
 
